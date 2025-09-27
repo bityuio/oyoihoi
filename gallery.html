@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - S Cube Fitness Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f0f0f',
+                        darker: '#0a0a0a',
+                        primary: '#ef4444',
+                        primaryDark: '#dc2626',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --dark: #0f0f0f;
+            --darker: #0a0a0a;
+        }
+
+        * {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: #f3f4f6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .gradient-bg-main {
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+
+        .gradient-bg-secondary {
+            background-image: linear-gradient(to right, var(--primaryDark), #991b1b);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #f3f4f6;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Animations for sections on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll-to-top button */
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            display: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Gallery grid styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            height: 250px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1rem;
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+        
+        /* Lightbox styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+        
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-prev {
+            left: 20px;
+        }
+        
+        .lightbox-next {
+            right: 20px;
+        }
+        
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        /* Filter buttons */
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: #1a1a1a;
+            color: #f3f4f6;
+            border: 1px solid #333;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Mobile optimization fixes */
+        @media (max-width: 768px) {
+            body, html {
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
+            header {
+                padding: 1rem;
+            }
+            
+            #mobile-nav {
+                width: 85%;
+                padding: 1.5rem;
+                max-width: 300px;
+            }
+            
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+            
+            .text-7xl {
+                font-size: 3rem;
+            }
+            
+            .py-20 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+            
+            .lightbox-prev {
+                left: 10px;
+            }
+            
+            .lightbox-next {
+                right: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #home h1 {
+                font-size: 2rem;
+            }
+            
+            .text-4xl {
+                font-size: 1.75rem;
+            }
+            
+            .text-5xl {
+                font-size: 2rem;
+            }
+            
+            #mobile-nav {
+                width: 90%;
+                max-width: 280px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item {
+                height: 200px;
+            }
+            
+            .filter-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-darker z-50 flex items-center justify-center">
+        <div class="relative">
+            <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-8 h-8 bg-primary rounded-full animate-ping"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="p-4 md:p-6 bg-dark fixed top-0 left-0 w-full z-30 shadow-lg">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-bold tracking-tight text-white flex items-center">
+                <span class="w-10 h-10 rounded-md bg-primary mr-2 flex items-center justify-center">S</span>
+                <span>CUBE<span class="text-primary"> Fitness Studio</span></span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <ul id="nav-menu" class="hidden md:flex space-x-8 items-center">
+                <li><a href="index.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">About Us</a></li>
+                <li><a href="services.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Service</a></li>
+                <li><a href="pricing.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Pricing</a></li>
+                <li><a href="gallery.html" class="text-primary font-medium">Gallery</a></li>
+               
+                <li><a href="contact.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Contact</a></li>
+                <li><a href="contact.html" class="bg-primary text-white px-4 py-2 rounded-full hover:bg-primaryDark transition-colors duration-300 shadow-lg hover:shadow-xl">Join Now</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Menu -->
+            <div id="hamburger-menu" class="md:hidden cursor-pointer hamburger z-50">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Mobile Nav Menu (Sliding) -->
+        <div id="mobile-nav" class="fixed top-0 right-0 w-3/4 h-full bg-dark shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-40 p-8">
+            <div class="flex justify-between items-center mb-10">
+                <a href="index.html" class="text-2xl font-bold text-white">S CUBE<span class="text-primary"> Fitness Studio</span></a>
+                <div id="close-mobile-menu" class="text-white text-2xl cursor-pointer">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <ul class="flex flex-col items-end space-y-6">
+                <li><a href="index.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">About Us</a></li>
+                <li><a href="services.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Service</a></li>
+                <li><a href="pricing.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Pricing</a></li>
+                <li><a href="gallery.html" class="text-primary text-xl font-medium">Gallery</a></li>
+               
+                <li><a href="contact.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Contact</a></li>
+                <li><a href="contact.html" class="bg-primary text-white px-6 py-3 rounded-full hover:bg-primaryDark transition-colors duration-300 text-xl font-medium">Join Now</a></li>
+            </ul>
+            <div class="absolute bottom-8 right-8 flex space-x-4">
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-facebook-f text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-instagram text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-youtube text-xl"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-20 px-6 bg-gradient-to-r from-dark to-darker">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 text-white">Our <span class="text-gradient">Gallery</span></h1>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">Take a visual tour of our state-of-the-art facilities, equipment, and vibrant fitness community.</p>
+        </div>
+    </section>
+
+    <main>
+        <!-- Gallery Filters -->
+        <section class="py-10 px-6 fade-in">
+            <div class="container mx-auto">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="facilities">Facilities</button>
+                    <button class="filter-btn" data-filter="equipment">Equipment</button>
+                    <button class="filter-btn" data-filter="classes">Group Classes</button>
+                    <button class="filter-btn" data-filter="training">Personal Training</button>
+                    <button class="filter-btn" data-filter="community">Community</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Grid -->
+        <section class="py-10 px-6 fade-in">
+            <div class="container mx-auto">
+                <div class="gallery-grid">
+                    <!-- Facilities Images -->
+                    <div class="gallery-item" data-category="facilities">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Main+Workout+Area" alt="Main Workout Area">
+                        <div class="gallery-item-overlay">
+                            <h3>Main Workout Area</h3>
+                            <p>Spacious and well-equipped training floor</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="facilities">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Cardio+Zone" alt="Cardio Zone">
+                        <div class="gallery-item-overlay">
+                            <h3>Cardio Zone</h3>
+                            <p>State-of-the-art cardio equipment with entertainment systems</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="facilities">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Free+Weights+Area" alt="Free Weights Area">
+                        <div class="gallery-item-overlay">
+                            <h3>Free Weights Area</h3>
+                            <p>Comprehensive selection of dumbbells, barbells, and plates</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Equipment Images -->
+                    <div class="gallery-item" data-category="equipment">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Strength+Machines" alt="Strength Machines">
+                        <div class="gallery-item-overlay">
+                            <h3>Strength Machines</h3>
+                            <p>Premium strength training equipment from leading brands</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="equipment">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Functional+Training+Zone" alt="Functional Training Zone">
+                        <div class="gallery-item-overlay">
+                            <h3>Functional Training Zone</h3>
+                            <p>TRX, battle ropes, kettlebells, and more</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="equipment">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Recovery+Area" alt="Recovery Area">
+                        <div class="gallery-item-overlay">
+                            <h3>Recovery Area</h3>
+                            <p>Foam rollers, massage guns, and stretching space</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Group Classes Images -->
+                    <div class="gallery-item" data-category="classes">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Yoga+Class" alt="Yoga Class">
+                        <div class="gallery-item-overlay">
+                            <h3>Yoga Class</h3>
+                            <p>Mindful movement and flexibility training</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="classes">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=HIIT+Session" alt="HIIT Session">
+                        <div class="gallery-item-overlay">
+                            <h3>HIIT Session</h3>
+                            <p>High-intensity interval training for maximum results</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="classes">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Cycling+Class" alt="Cycling Class">
+                        <div class="gallery-item-overlay">
+                            <h3>Cycling Class</h3>
+                            <p>Energetic indoor cycling with motivating instructors</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Personal Training Images -->
+                    <div class="gallery-item" data-category="training">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=One-on-One+Training" alt="One-on-One Training">
+                        <div class="gallery-item-overlay">
+                            <h3>One-on-One Training</h3>
+                            <p>Personalized attention from certified trainers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="training">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Form+Correction" alt="Form Correction">
+                        <div class="gallery-item-overlay">
+                            <h3>Form Correction</h3>
+                            <p>Expert guidance to ensure proper technique</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="training">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Progress+Tracking" alt="Progress Tracking">
+                        <div class="gallery-item-overlay">
+                            <h3>Progress Tracking</h3>
+                            <p>Regular assessments to measure improvements</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Community Images -->
+                    <div class="gallery-item" data-category="community">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Member+Events" alt="Member Events">
+                        <div class="gallery-item-overlay">
+                            <h3>Member Events</h3>
+                            <p>Community-building activities and challenges</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="community">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Success+Celebrations" alt="Success Celebrations">
+                        <div class="gallery-item-overlay">
+                            <h3>Success Celebrations</h3>
+                            <p>Recognizing member achievements and milestones</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="community">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Group+Workouts" alt="Group Workouts">
+                        <div class="gallery-item-overlay">
+                            <h3>Group Workouts</h3>
+                            <p>Partner and small group training sessions</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Images -->
+                    <div class="gallery-item" data-category="facilities">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Locker+Rooms" alt="Locker Rooms">
+                        <div class="gallery-item-overlay">
+                            <h3>Locker Rooms</h3>
+                            <p>Clean, modern facilities with showers and amenities</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="equipment">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Stretching+Area" alt="Stretching Area">
+                        <div class="gallery-item-overlay">
+                            <h3>Stretching Area</h3>
+                            <p>Dedicated space for mobility and flexibility work</p>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-item" data-category="classes">
+                        <img src="https://placehold.co/600x500/262626/f3f4f6?text=Pilates+Class" alt="Pilates Class">
+                        <div class="gallery-item-overlay">
+                            <h3>Pilates Class</h3>
+                            <p>Core strengthening and body awareness</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Tour Section -->
+        <section class="py-20 px-6 bg-dark fade-in">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Virtual <span class="text-gradient">Tour</span></h2>
+                    <div class="h-1 w-20 gradient-bg-main mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        Can't visit us in person? Take a virtual tour of our facilities to see what makes S Cube Fitness unique.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="relative rounded-2xl overflow-hidden shadow-xl">
+                            <video controls class="w-full">
+                                <source src="https://assets.mixkit.co/videos/preview/mixkit-man-working-out-at-a-gym-22872-large.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-6">
+                                <div class="text-white">
+                                    <h3 class="text-xl font-bold">Full Facility Tour</h3>
+                                    <p>5-minute guided tour of our entire gym</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-3xl font-bold text-white mb-6">Experience Our Space</h3>
+                        <p class="text-lg text-gray-300 mb-6">
+                            Our 10,000 square foot facility is designed with your fitness journey in mind. From the moment you walk in, you'll notice the attention to detail that makes S Cube Fitness a premium training environment.
+                        </p>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-white">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>10,000 sq ft of training space</span>
+                            </li>
+                            <li class="flex items-center text-white">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Natural lighting throughout</span>
+                            </li>
+                            <li class="flex items-center text-white">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Premium equipment from top brands</span>
+                            </li>
+                            <li class="flex items-center text-white">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Dedicated zones for different training styles</span>
+                            </li>
+                            <li class="flex items-center text-white">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Spacious locker rooms with amenities</span>
+                            </li>
+                        </ul>
+                        <a href="contact.html" class="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primaryDark transition-colors duration-300 inline-flex items-center">
+                            Schedule a Tour <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram Feed Section -->
+        <section class="py-20 px-6 fade-in">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Follow Our <span class="text-gradient">Journey</span></h2>
+                    <div class="h-1 w-20 gradient-bg-secondary mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        See daily updates, member spotlights, and behind-the-scenes content on our social media.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                    <div class="relative group overflow-hidden rounded-lg cursor-pointer h-40">
+                        <img src="https://placehold.co/600x600/262626/f3f4f6?text=Instagram+1" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <i class="fab fa-instagram text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg cursor-pointer h-40">
+                        <img src="https://placehold.co/600x600/262626/f3f4f6?text=Instagram+2" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <i class="fab fa-instagram text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg cursor-pointer h-40">
+                        <img src="https://placehold.co/600x600/262626/f3f4f6?text=Instagram+3" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <i class="fab fa-instagram text-3xl text-white"></i>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-lg cursor-pointer h-40">
+                        <img src="https://placehold.co/600x600/262626/f3f4f6?text=Instagram+4" alt="Instagram Post" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <i class="fab fa-instagram text-3xl text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
+                        <i class="fab fa-instagram mr-2"></i> Follow @scubefit on Instagram
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 px-6 gradient-bg-main fade-in">
+            <div class="container mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Ready to Experience Our Facilities?</h2>
+                <p class="text-xl text-white mb-10 max-w-2xl mx-auto">
+                    Schedule a tour and see for yourself why S Cube Fitness is the premier choice for fitness enthusiasts.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="contact.html" class="px-8 py-4 bg-white text-primary font-bold text-lg rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                        Schedule a Tour
+                    </a>
+                    <a href="pricing.html" class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg rounded-full hover:bg-white hover:text-primary transition-all duration-300">
+                        View Membership Plans
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close" id="lightboxClose">&times;</span>
+            <img src="" alt="" id="lightboxImage">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-darker text-gray-400 py-12 px-6">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="index.html" class="text-2xl font-bold text-white mb-6 inline-block">S CUBE<span class="text-primary">FIT</span></a>
+                    <p class="mb-6">Transforming lives through fitness, nutrition, and community support since 2010.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-6 text-lg">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="about.html" class="hover:text-primary transition-colors">About Us</a></li>
+                        <li><a href="services.html" class="hover:text-primary transition-colors">Services</a></li>
+                        <li><a href="pricing.html" class="hover:text-primary transition-colors">Membership</a></li>
+                        <li><a href="gallery.html" class="hover:text-primary transition-colors">Gallery</a></li>
+                    </ul>
+                </div>
+                
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-6 text-lg">Contact Info</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary mr-3 mt-1"></i>
+                            <span>123 Fitness Ave, Suite 100<br>Workout City, WA 98001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-primary mr-3"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-primary mr-3"></i>
+                            <span>info@scubefit.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-clock text-primary mr-3"></i>
+                            <span>Mon-Fri: 5am - 11pm<br>Sat-Sun: 7am - 9pm</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 pt-8 text-center">
+                <p>&copy; 2024 S Cube Fitness Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll-to-top button -->
+    <button id="scrollToTopBtn" class="bg-primary text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-primaryDark">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript for functionality -->
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Mobile menu functionality
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const mobileNav = document.getElementById('mobile-nav');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const navLinks = mobileNav.querySelectorAll('a');
+
+        hamburgerMenu.addEventListener('click', () => {
+            mobileNav.classList.toggle('translate-x-full');
+            hamburgerMenu.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            mobileNav.classList.add('translate-x-full');
+            hamburgerMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.add('translate-x-full');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Gallery filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                galleryItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let currentImageIndex = 0;
+        const galleryImages = Array.from(galleryItems);
+
+        // Open lightbox when gallery item is clicked
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                const caption = item.querySelector('h3').textContent;
+                
+                lightboxImage.src = img.src;
+                lightboxCaption.textContent = caption;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                currentImageIndex = index;
+            });
+        });
+
+        // Close lightbox
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close lightbox when clicking outside the image
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Navigate to previous image
+        lightboxPrev.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+        });
+
+        // Navigate to next image
+        lightboxNext.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                } else if (e.key === 'ArrowLeft') {
+                    currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                    updateLightboxImage();
+                } else if (e.key === 'ArrowRight') {
+                    currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                    updateLightboxImage();
+                }
+            }
+        });
+
+        function updateLightboxImage() {
+            const item = galleryImages[currentImageIndex];
+            const img = item.querySelector('img');
+            const caption = item.querySelector('h3').textContent;
+            
+            lightboxImage.src = img.src;
+            lightboxCaption.textContent = caption;
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections with fade-in class
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('fade-in');
+            observer.observe(section);
+        });
+
+        // Scroll-to-top button functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.style.display = 'block';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.getElementById('main-header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

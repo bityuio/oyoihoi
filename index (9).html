@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S Cube Fitness Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f0f0f',
+                        darker: '#0a0a0a',
+                        primary: '#ef4444',
+                        primaryDark: '#dc2626',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <style>
+        :root {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --dark: #0f0f0f;
+            --darker: #0a0a0a;
+        }
+
+        * {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--darker);
+            color: #f3f4f6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .gradient-bg-main {
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+
+        .gradient-bg-secondary {
+            background-image: linear-gradient(to right, var(--primaryDark), #991b1b);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #f3f4f6;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Video Background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        /* Overlay for text visibility */
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Animations for sections on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll-to-top button */
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 50px;
+            right: 20px;
+            z-index: 150;
+            display: none;
+        }
+
+        /* Custom card hover effects */
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.1), 0 10px 10px -5px rgba(239, 68, 68, 0.04);
+        }
+
+        /* Membership card special effect */
+        .membership-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .membership-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        .membership-card:hover::before {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        /* Testimonial card styling */
+        .testimonial-card {
+            background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3),
+                        -5px -5px 15px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+
+        /* Pulse animation for CTA elements */
+        @keyframes pulse-cta {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .pulse-cta {
+            animation: pulse-cta 2s infinite;
+        }
+
+        /* Custom checkbox for forms */
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        .custom-checkbox .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Loading animation for images */
+        .image-loading {
+            position: relative;
+            overflow: hidden;
+            background: #2a2a2a;
+        }
+        .image-loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: translateX(-100%);
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0,
+                rgba(255, 255, 255, 0.2) 20%,
+                rgba(255, 255, 255, 0.5) 60%,
+                rgba(255, 255, 255, 0)
+            );
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Floating elements animation */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Gradient text animation */
+        .animated-gradient-text {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 300% 300%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 8s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3D transform on hover for cards */
+        .transform-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .card-3d {
+            transition: transform 0.5s ease;
+        }
+        .card-3d:hover {
+            transform: translateZ(20px) rotateX(5deg) rotateY(5deg);
+        }
+
+        /* Pricing cards */
+        .pricing-card {
+            background: #1a1a1a;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(239, 68, 68, 0.1);
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid #ef4444;
+            transform: scale(1.05);
+        }
+
+        /* Floating banner */
+        .floating-banner {
+            position: fixed;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            overflow: hidden;
+            height: 2.5rem;
+            display: none;
+            cursor: pointer;
+        }
+
+        .floating-banner span {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            color: #fff;
+            background-color: #ff4d6d;
+            border-radius: 1rem;
+            animation: slide-left-right 10s linear infinite;
+        }
+
+        @keyframes slide-left-right {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Mobile optimization fixes */
+        @media (max-width: 768px) {
+            /* Prevent horizontal scrolling */
+            body, html {
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
+            /* Fix for mobile header */
+            header {
+                padding: 1rem;
+            }
+            
+            /* Mobile navigation improvements */
+            #mobile-nav {
+                width: 85%;
+                padding: 1.5rem;
+                max-width: 300px;
+            }
+            
+            /* Improve mobile typography */
+            .text-5xl {
+                font-size: 2.5rem;
+            }
+            
+            .text-7xl {
+                font-size: 3rem;
+            }
+            
+            /* Better spacing for mobile */
+            .py-20 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+            
+            /* Fix for stats counter on mobile */
+            .grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1.5rem;
+            }
+            
+            /* Fix for image grids on mobile */
+            .grid-cols-2 img {
+                height: 200px;
+            }
+            
+            /* Fix for pricing cards on mobile */
+            .lg\:grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Fix for trainer cards on mobile */
+            .lg\:grid-cols-4 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Featured pricing card on mobile */
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+            
+            /* Fix for video background on mobile */
+            .video-background {
+                width: 100%;
+                height: 100%;
+            }
+            
+            /* Fix for hero section on mobile */
+            #home h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+            }
+            
+            /* Fix for about section images on mobile */
+            #about .grid-cols-2 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            #about .grid-cols-2 img {
+                margin-top: 0 !important;
+            }
+            
+            /* Fix for gallery section on mobile */
+            #gallery .grid-cols-1 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Fix for contact form on mobile */
+            #contact .grid-cols-1 {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Fix for FAQ section on mobile */
+            .faq-question {
+                font-size: 1rem;
+            }
+            
+            /* Ensure all containers have proper padding */
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            /* Fix for buttons on mobile */
+            .flex-col a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Additional fixes for very small screens */
+        @media (max-width: 480px) {
+            #home h1 {
+                font-size: 2rem;
+            }
+            
+            .text-4xl {
+                font-size: 1.75rem;
+            }
+            
+            .text-5xl {
+                font-size: 2rem;
+            }
+            
+            #mobile-nav {
+                width: 90%;
+                max-width: 280px;
+            }
+            
+            .pricing-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Preloader -->
+    <div id="preloader" class="fixed inset-0 bg-darker z-50 flex items-center justify-center">
+        <div class="relative">
+            <div class="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div class="w-8 h-8 bg-primary rounded-full animate-ping"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Gym Background-->
+    <style>
+        /* BASE BODY STYLES: Sets up the full-screen canvas */
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative; 
+            min-height: 100vh;
+            overflow: hidden; 
+        }
+
+        /* DYNAMIC BACKGROUND CONTAINER: Sits behind all content */
+        #dynamic-bg {
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            
+            /* ADJUSTED: Reduced Red Opacity, Increased Dark/Black Opacity */
+            background: linear-gradient(-45deg, 
+                rgba(0,0,0,1.0), 
+                rgba(15,15,15,1.0), 
+                rgba(239,68,68,0.4), /* Reduced red opacity (0.6 -> 0.4) */
+                rgba(220,38,38,0.5)  /* Reduced dark red opacity (0.7 -> 0.5) */
+            );
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        /* Gradient background loop - remains the same */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Dynamic glowing bubbles logic */
+        .element {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: transform 10s linear, opacity 3s ease, background 2s ease;
+            transform: translate(-100px, -100px); 
+            opacity: 0; 
+        }
+
+        /* ADJUSTED: Reduced Red Bubble Opacity, Increased Dark Bubble Opacity */
+        .red-bubble  { 
+            background: rgba(239,68,68,0.15); /* Reduced background opacity (0.25 -> 0.15) */
+            box-shadow: 0 0 30px rgba(239,68,68,0.5); /* Reduced glow intensity (0.6 -> 0.5) */
+        } 
+        .dark-bubble { 
+            background: rgba(220,38,38,0.4); /* Increased background opacity (0.3 -> 0.4) */
+            box-shadow: 0 0 50px rgba(220,38,38,0.8); /* Increased glow intensity and spread (0.7 -> 0.8, 40px -> 50px) */
+        } 
+        .white-bubble { 
+            background: rgba(255,255,255,0.1); /* Slightly reduced white opacity (0.15 -> 0.1) */
+            box-shadow: 0 0 25px rgba(255,255,255,0.3); /* Slightly reduced white glow (0.4 -> 0.3) */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="dynamic-bg">
+        <div class="element red-bubble"  style="width:180px; height:180px;"></div>
+        <div class="element dark-bubble" style="width:140px; height:140px;"></div>
+        <div class="element white-bubble" style="width:120px; height:120px;"></div>
+        <div class="element red-bubble"  style="width:100px; height:100px;"></div>
+        <div class="element dark-bubble" style="width:160px; height:160px;"></div>
+        <div class="element white-bubble" style="width:90px; height:90px;"></div>
+        <div class="element red-bubble"  style="width:130px; height:130px;"></div>
+        <div class="element dark-bubble" style="width:150px; height:150px;"></div>
+        <div class="element white-bubble" style="width:110px; height:110px;"></div>
+    </div>
+
+    <script>
+        // function to move elements randomly across screen 
+        function moveElement(el, initial = false) {
+            const elWidth = el.offsetWidth;
+            const elHeight = el.offsetHeight;
+
+            // Calculate position ensuring element stays largely within view
+            const x = Math.random() * (window.innerWidth - elWidth);
+            const y = Math.random() * (window.innerHeight - elHeight);
+            
+            el.style.transform = `translate(${x}px, ${y}px)`;
+            
+            // If it's the initial placement, make it appear subtly, otherwise use random opacity
+            if (initial) {
+                el.style.opacity = 0.4 + Math.random() * 0.3; 
+            } else {
+                el.style.opacity = 0.4 + Math.random() * 0.6; // Dynamic glow effect
+            }
+        }
+
+        // We now select elements *inside* the dynamic-bg container
+        const elements = document.querySelectorAll('#dynamic-bg .element');
+
+        // instantly move elements at page load (no static look)
+        elements.forEach(el => {
+            // Call moveElement with 'true' for initial placement
+            moveElement(el, true); 
+            // Subsequent moves will use the default (false) for initial
+            setInterval(() => moveElement(el), 6000 + Math.random() * 4000);
+        });
+    </script>
+</body>
+</html>
+
+
+ <!-- Floating Left-to-Right Banner -->
+<div class="floating-banner" id="floatingBanner">
+    <div class="0"> 
+        <span>
+            📣 Contact for Exciting Offers!!! &nbsp; &nbsp; &nbsp;
+        </span>
+    </div>
+
+    <button id="close-banner-btn" aria-label="Close Offer Banner">
+        &times;
+    </button>
+</div>
+
+<style>
+    /* 1. Base Styles for the Floating Banner */
+    .floating-banner {
+        /* Layout */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2000; /* Increased z-index to ensure visibility */
+        display: flex; /* Use flexbox to align text and button */
+        align-items: center;
+        justify-content: space-between;
+
+        /* Appearance */
+        padding: 0.75rem 1rem;
+        color: white;
+        font-weight: 600;
+        font-size: 1.125rem;
+        background-image: linear-gradient(to right, #ef4444 0%, #b91c1c 100%);
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
+
+        /* Entrance Animation */
+        transform: translateY(100%); 
+        animation: slideInUp 0.5s ease-out forwards;
+        animation-delay: 2s;
+    }
+
+    /* 2. Close Button Styles */
+    #close-banner-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        line-height: 1;
+        cursor: pointer;
+        padding: 0 0 0 1rem;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+    #close-banner-btn:hover {
+        opacity: 1;
+    }
+
+    /* 3. Marquee Styles */
+    .marquee-content-wrapper {
+        flex-grow: 1;
+        overflow: hidden; /* FIX: Essential for hiding the scrolling text outside the banner width */
+    }
+
+    .floating-banner .marquee-content-wrapper span {
+        display: inline-block;
+        white-space: nowrap; /* Forces text to stay on one line */
+        padding-left: 100%; /* Start the text just off-screen to the right */
+        animation: marquee 20s linear infinite;
+    }
+    
+    .floating-banner .marquee-content-wrapper span:hover {
+        animation-play-state: paused;
+    }
+
+    /* 4. Exit Animation Class */
+    .floating-banner.hide {
+        animation: slideOutDown 0.5s ease-in forwards;
+    }
+
+    /* 5. Keyframe Animations */
+    @keyframes slideInUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+
+    @keyframes slideOutDown {
+        from { transform: translateY(0); }
+        to { transform: translateY(100%); }
+    }
+
+    @keyframes marquee {
+        /* Moves the text from the right edge of the container (0%) to fully off-screen left (-100% of its own width) */
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Target the correct ID from the HTML ('floatingBanner')
+        const offerBanner = document.getElementById('floatingBanner');
+        const closeBannerBtn = document.getElementById('close-banner-btn');
+        
+        if (!offerBanner || !closeBannerBtn) return;
+
+        // Check if the banner was already closed in this session
+        if (sessionStorage.getItem('fitflexBannerClosed') === 'true') {
+            offerBanner.style.display = 'none';
+        }
+
+        const handleCloseBanner = () => {
+            // Remember that the banner was closed for this session
+            sessionStorage.setItem('fitflexBannerClosed', 'true');
+            
+            // Add the '.hide' class to trigger the CSS animation
+            offerBanner.classList.add('hide');
+            
+            // Use animationend for accurate timing
+            offerBanner.addEventListener('animationend', function handler(e) {
+                if (e.animationName === 'slideOutDown') {
+                    offerBanner.style.display = 'none';
+                    offerBanner.removeEventListener('animationend', handler);
+                }
+            }, { once: true });
+        };
+
+        // This line makes the button clickable
+        closeBannerBtn.addEventListener('click', handleCloseBanner);
+
+        // Remove the deprecated inline click handler (onclick="hideBanner()") from the main banner div
+        offerBanner.onclick = null;
+    });
+</script>
+
+    <!-- Header & Navigation -->
+    <header class="p-4 md:p-6 bg-transparent fixed top-0 left-0 w-full z-30 transition-all duration-300" id="main-header">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold tracking-tight text-white flex items-center">
+                <span class="w-10 h-10 rounded-md bg-primary mr-2 flex items-center justify-center">S</span>
+                <span>CUBE<span class="text-primary"> Fitness Studio</span></span>
+            </a>
+            
+            <!-- Desktop Navigation -->
+            <ul id="nav-menu" class="hidden md:flex space-x-8 items-center">
+                <li><a href="#home" class="text-white hover:text-primary transition-colors duration-300 font-medium">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">About Us</a></li>
+                <li><a href="services.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Services</a></li>
+                <li><a href="pricing.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Pricing</a></li>
+                <li><a href="gallery.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Gallery</a></li>
+               
+                <li><a href="contact.html" class="text-white hover:text-primary transition-colors duration-300 font-medium">Contact</a></li>
+                <li><a href="#cta" class="bg-primary text-white px-4 py-2 rounded-full hover:bg-primaryDark transition-colors duration-300 shadow-lg hover:shadow-xl">Join Now</a></li>
+            </ul>
+
+            <!-- Mobile Hamburger Menu -->
+            <div id="hamburger-menu" class="md:hidden cursor-pointer hamburger z-50">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+
+        <!-- Mobile Nav Menu (Sliding) -->
+        <div id="mobile-nav" class="fixed top-0 right-0 w-3/4 h-full bg-dark shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-40 p-8">
+            <div class="flex justify-between items-center mb-10">
+                <a href="#" class="text-2xl font-bold text-white">S CUBE<span class="text-primary"> Fitness Studio</span></a>
+                <div id="close-mobile-menu" class="text-white text-2xl cursor-pointer">
+                    
+                </div>
+            </div>
+            <ul class="flex flex-col items-end space-y-6">
+                <li><a href="#home" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Home</a></li>
+                <li><a href="about.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">About Us</a></li>
+                <li><a href="services.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Services</a></li>
+                <li><a href="pricing.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Pricing</a></li>
+                <li><a href="gallery.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Gallery</a></li>
+                <li><a href="contact.html" class="text-white hover:text-primary transition-colors duration-300 text-xl font-medium">Contact</a></li>
+                <li><a href="#cta" class="bg-primary text-white px-6 py-3 rounded-full hover:bg-primaryDark transition-colors duration-300 text-xl font-medium">Join Now</a></li>
+            </ul>
+            <div class="absolute bottom-8 right-8 flex space-x-4">
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-facebook-f text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-instagram text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-twitter text-xl"></i></a>
+                <a href="#" class="text-white hover:text-primary"><i class="fab fa-youtube text-xl"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section with Video Background -->
+        <section id="home" class="relative min-h-screen flex items-center justify-center text-center p-6">
+            <!-- Video Element -->
+            <video autoplay loop muted playsinline class="video-background">
+                <source src="100546-video-720" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- Overlay -->
+            <div class="video-overlay"></div>
+            
+            <div class="relative z-10 max-w-4xl mx-auto px-4">
+                <h1 class="text-4xl md:text-7xl font-extrabold leading-tight text-white mb-4">
+                    <span class="animated-gradient-text">SCULPT</span> YOUR STRENGTH. <br class="hidden md:block"> 
+                    <span class="text-gradient">SHAPE</span> YOUR FUTURE.
+                </h1>
+                <p class="text-lg md:text-xl font-light text-gray-200 mb-8 max-w-2xl mx-auto">
+                    Experience premium fitness training with state-of-the-art facilities, expert trainers, and a community dedicated to your success.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#contact" class="pulse-cta px-8 py-4 bg-primary text-white font-bold text-lg rounded-full shadow-lg hover:bg-primaryDark transition-all duration-300 transform hover:scale-105">
+                        Start Your Journey
+                    </a>
+                    <a href="#about" class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg rounded-full hover:bg-white hover:text-dark transition-all duration-300">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+                <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                    <div class="w-1 h-3 bg-primary rounded-full mt-2 animate-bounce"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Counter Section -->
+        <section id="stats" class="py-16 bg-dark">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="fade-in">
+                        <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="members-count">0</div>
+                        <div class="text-gray-400 uppercase text-sm tracking-wider">Happy Members</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="trainers-count">0</div>
+                        <div class="text-gray-400 uppercase text-sm tracking-wider">Expert Trainers</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="programs-count">0</div>
+                        <div class="text-gray-400 uppercase text-sm tracking-wider">Fitness Programs</div>
+                    </div>
+                    <div class="fade-in">
+                        <div class="text-4xl md:text-5xl font-bold text-primary mb-2" id="years-count">0</div>
+                        <div class="text-gray-400 uppercase text-sm tracking-wider">Years of Excellence</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-20 px-6 fade-in">
+            <div class="container mx-auto">
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/2">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Our <span class="text-gradient">Philosophy</span></h2>
+                        <div class="h-1 w-20 gradient-bg-secondary mb-10 rounded-full"></div>
+                        <p class="text-lg md:text-xl text-gray-300 mb-6">
+                            At S Cube Fitness Studio, we believe that fitness is a journey of self-discovery. Our gym is more than just a place to work out; it's a community where you can push your limits, celebrate your victories, and become the best version of yourself.
+                        </p>
+                        <p class="text-lg md:text-xl text-gray-300 mb-8">
+                            We provide the tools, the knowledge, and the unwavering support you need to succeed. Our holistic approach combines cutting-edge training techniques with nutritional guidance and mental wellness practices.
+                        </p>
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-primary"></i>
+                                </div>
+                                <span class="text-white">Personalized Programs</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-primary"></i>
+                                </div>
+                                <span class="text-white">Expert Trainers</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-primary"></i>
+                                </div>
+                                <span class="text-white">Modern Equipment</span>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check text-primary"></i>
+                                </div>
+                                <span class="text-white">Results Guaranteed</span>
+                            </div>
+                        </div>
+                        <a href="#services" class="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primaryDark transition-colors duration-300 inline-flex items-center">
+                            Explore Our Services <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <div class="lg:w-1/2 relative">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <img src="3d-rendering-modern-loft-gym-fitness" alt="Gym Interior" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                            <img src="abstract-blur-gym-fitness" alt="Training Session" class="w-full h-64 object-cover rounded-2xl shadow-lg md:mt-8">
+                            <img src="abstract-blur-gym-fitness-room" alt="Equipment" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+                            <img src="training-828726_1280" alt="Group Class" class="w-full h-64 object-cover rounded-2xl shadow-lg md:mt-8">
+                        </div>
+                        <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-xl floating">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="py-20 px-6 bg-dark fade-in">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Our <span class="text-gradient">Services</span></h2>
+                    <div class="h-1 w-20 gradient-bg-main mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        We offer a comprehensive range of fitness services tailored to meet your individual goals and needs.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                    <!-- Service Card 1 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-dumbbell text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Personal Training</h3>
+                        <p class="text-gray-400 mb-6">Customized workout plans and one-on-one coaching to help you reach your goals faster and safer.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Custom workout plans</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> One-on-one coaching</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Progress tracking</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Service Card 2 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-users text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Group Classes</h3>
+                        <p class="text-gray-400 mb-6">Energizing classes from Yoga to HIIT, led by motivating instructors in a fun group environment.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Variety of class types</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Expert instructors</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Community atmosphere</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Service Card 3 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-utensils text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Nutrition Coaching</h3>
+                        <p class="text-gray-400 mb-6">Expert guidance on diet and nutrition to complement your training and optimize your results.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Personalized meal plans</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Supplement guidance</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Weekly check-ins</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Service Card 4 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-heartbeat text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Body Composition Analysis</h3>
+                        <p class="text-gray-400 mb-6">Advanced scanning technology to track your progress beyond just weight measurements.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Detailed body metrics</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Progress tracking</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Custom recommendations</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Service Card 5 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-running text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Specialized Programs</h3>
+                        <p class="text-gray-400 mb-6">Targeted programs for weight loss, muscle building, athletic performance, and more.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Goal-specific training</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Progressive overload</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Periodized planning</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                    <!-- Service Card 6 -->
+                    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl transform-3d card-hover">
+                        <div class="w-16 h-16 gradient-bg-main rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-spa text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Recovery Services</h3>
+                        <p class="text-gray-400 mb-6">Enhance your recovery with our massage therapy, cryotherapy, and stretching sessions.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Massage therapy</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Cryotherapy</li>
+                            <li class="flex items-center text-gray-300"><i class="fas fa-check-circle text-primary mr-2"></i> Assisted stretching</li>
+                        </ul>
+                        <a href="#contact" class="text-primary font-semibold inline-flex items-center">
+                            Learn More <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 px-6 bg-dark fade-in relative overflow-hidden">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Membership <span class="text-gradient">Plans</span></h2>
+                    <div class="h-1 w-20 gradient-bg-main mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        Choose the plan that works best for you. All memberships include access to our state-of-the-art facilities.
+                    </p>
+                </div>
+                
+                <div class="flex justify-center mb-12">
+                    <div class="bg-slate-800 rounded-full p-1 inline-flex">
+                        <button id="monthly-toggle" class="px-6 py-3 rounded-full bg-primary text-white font-semibold">Monthly</button>
+                        <button id="annual-toggle" class="px-6 py-3 rounded-full bg-transparent text-gray-400 font-semibold">Annual (Save 20%)</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Basic Plan -->
+                    <div class="pricing-card">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Basic</h3>
+                            <div class="price monthly-price">
+                                <span class="text-4xl font-bold text-white">₹2000</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <div class="price annual-price hidden">
+                                <span class="text-4xl font-bold text-white">₹1600</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <p class="text-gray-400 mt-2">Perfect for beginners</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Access to gym facilities</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Free fitness assessment</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Locker room access</span>
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fas fa-times-circle mr-3"></i>
+                                <span>Group classes</span>
+                            </li>
+                            <li class="flex items-center text-gray-400">
+                                <i class="fas fa-times-circle mr-3"></i>
+                                <span>Personal training</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block w-full py-3 bg-slate-700 text-white text-center font-semibold rounded-lg hover:bg-primary transition-colors">
+                            Get Started
+                        </a>
+                    </div>
+                    
+                    <!-- Pro Plan (Featured) -->
+                    <div class="pricing-card featured">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Pro</h3>
+                            <div class="price monthly-price">
+                                <span class="text-4xl font-bold text-white">₹3500</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <div class="price annual-price hidden">
+                                <span class="text-4xl font-bold text-white">₹2800</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <p class="text-gray-400 mt-2">Our most popular plan</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Access to gym facilities</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Unlimited group classes</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Locker room access</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Nutrition guide</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>1 personal training session/month</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block w-full py-3 gradient-bg-main text-white text-center font-semibold rounded-lg hover:opacity-90 transition-all">
+                            Get Started
+                        </a>
+                    </div>
+                    
+                    <!-- Elite Plan -->
+                    <div class="pricing-card">
+                        <div class="text-center mb-8">
+                            <h3 class="text-2xl font-bold text-white mb-2">Elite</h3>
+                            <div class="price monthly-price">
+                                <span class="text-4xl font-bold text-white">₹6000</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <div class="price annual-price hidden">
+                                <span class="text-4xl font-bold text-white">₹4800</span>
+                                <span class="text-gray-400">/month</span>
+                            </div>
+                            <p class="text-gray-400 mt-2">For serious results</p>
+                        </div>
+                        <ul class="space-y-4 mb-8">
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Access to gym facilities</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Unlimited group classes</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Premium locker room</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Custom nutrition plan</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>4 personal training sessions/month</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <i class="fas fa-check-circle text-primary mr-3"></i>
+                                <span>Recovery services discount</span>
+                            </li>
+                        </ul>
+                        <a href="#contact" class="block w-full py-3 bg-slate-700 text-white text-center font-semibold rounded-lg hover:bg-primary transition-colors">
+                            Get Started
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-20 px-6 fade-in">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Our <span class="text-gradient">Facilities</span></h2>
+                    <div class="h-1 w-20 gradient-bg-secondary mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        Take a virtual tour of our state-of-the-art fitness center and training facilities.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+1" alt="Gym Interior" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Main Training Area</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+2" alt="Lifting Area" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Strength Zone</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+3" alt="Group Class" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Group Fitness Studio</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+4" alt="Cardio Machines" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Cardio Section</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+5" alt="Personal Trainer" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Personal Training</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative group overflow-hidden rounded-2xl cursor-pointer h-64">
+                        <img src="https://placehold.co/600x400/262626/f3f4f6?text=Gym+Image+6" alt="Recovery Area" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus text-3xl mb-2"></i>
+                                <p>Recovery Zone</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <a href="#" class="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-colors">
+                        <i class="fab fa-instagram mr-2"></i> Follow us on Instagram for more
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 px-6 bg-dark fade-in">
+            <div class="container mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Success <span class="text-gradient">Stories</span></h2>
+                    <div class="h-1 w-20 gradient-bg-main mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                        Hear from our members about their transformative experiences at S Cube Fitness.
+                    </p>
+                </div>
+                
+                <div class="swiper testimonial-slider">
+                    <div class="swiper-wrapper">
+                        <!-- Testimonial 1 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card rounded-2xl p-8">
+                                <div class="flex items-center mb-6">
+                                    <img src="https://placehold.co/60x60/262626/f3f4f6?text=J" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                                    <div class="ml-4">
+                                        <h4 class="text-white font-bold">Jennifer K.</h4>
+                                        <p class="text-primary">Lost 35 lbs in 4 months</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-6">
+                                    "S Cube Fitness transformed my life. The trainers are incredibly knowledgeable and supportive. I've not only lost weight but gained confidence and energy I never thought possible."
+                                </p>
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Testimonial 2 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card rounded-2xl p-8">
+                                <div class="flex items-center mb-6">
+                                    <img src="https://placehold.co/60x60/262626/f3f4f6?text=M" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                                    <div class="ml-4">
+                                        <h4 class="text-white font-bold">Mike T.</h4>
+                                        <p class="text-primary">Gained 15 lbs of muscle</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-6">
+                                    "The personalized training program and nutrition guidance helped me break through my plateau. I've achieved muscle gains I've been chasing for years in just 6 months."
+                                </p>
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Testimonial 3 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card rounded-2xl p-8">
+                                <div class="flex items-center mb-6">
+                                    <img src="https://placehold.co/60x60/262626/f3f4f6?text=S" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                                    <div class="ml-4">
+                                        <h4 class="text-white font-bold">Sarah L.</h4>
+                                        <p class="text-primary">Ran first marathon at 45</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-6">
+                                    "The endurance training program prepared me perfectly for my first marathon. The coaches understood my goals and tailored everything to help me succeed injury-free."
+                                </p>
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Testimonial 4 -->
+                        <div class="swiper-slide">
+                            <div class="testimonial-card rounded-2xl p-8">
+                                <div class="flex items-center mb-6">
+                                    <img src="https://placehold.co/60x60/262626/f3f4f6?text=D" alt="Client" class="w-14 h-14 rounded-full object-cover">
+                                    <div class="ml-4">
+                                        <h4 class="text-white font-bold">David R.</h4>
+                                        <p class="text-primary">Rehabbed shoulder injury</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-300 mb-6">
+                                    "After my shoulder injury, I thought I'd never lift heavy again. The trainers here developed a rehab program that not only fixed my shoulder but made it stronger than before."
+                                </p>
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Add pagination -->
+                    <div class="swiper-pagination mt-8"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" class="py-20 px-6 gradient-bg-main fade-in">
+            <div class="container mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Ready to Transform Your Life?</h2>
+                <p class="text-xl text-white mb-10 max-w-2xl mx-auto">
+                    Join S Cube Fitness today and start your journey to a stronger, healthier you.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#contact" class="px-8 py-4 bg-white text-primary font-bold text-lg rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                        Get Started Now
+                    </a>
+                    <a href="#pricing" class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold text-lg rounded-full hover:bg-white hover:text-primary transition-all duration-300">
+                        View Membership Plans
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Map Section -->
+        <section id="contact" class="py-20 px-6 bg-dark fade-in">
+            <div class="container mx-auto max-w-6xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Get in <span class="text-gradient">Touch</span></h2>
+                    <div class="h-1 w-20 gradient-bg-main mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300">
+                        Visit us, send us a message, or give us a call to start your fitness journey today.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-white mb-6">Contact Details</h3>
+                        <div class="space-y-6 mb-10">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Address</h4>
+                                    <p class="text-gray-300">123 Fitness Ave, Suite 100, Workout City, WA 98001</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-phone-alt text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Phone</h4>
+                                    <p class="text-gray-300">(555) 123-4567</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-envelope text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Email</h4>
+                                    <p class="text-gray-300">info@scubefit.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4 mt-1">
+                                    <i class="fas fa-clock text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-medium mb-1">Hours</h4>
+                                    <p class="text-gray-300">Monday-Friday: 5am - 11pm</p>
+                                    <p class="text-gray-300">Saturday-Sunday: 7am - 9pm</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-2xl font-semibold text-white mb-6">Follow Us</h3>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center text-white hover:bg-primary transition-colors">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-slate-800 rounded-2xl p-8 shadow-xl">
+                        <h3 class="text-2xl font-semibold text-white mb-6">Send Us a Message</h3>
+                        <form id="contact-form">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                                    <input type="text" id="name" name="name" placeholder="John Doe" class="w-full p-4 bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-300 mb-2">Your Email</label>
+                                    <input type="email" id="email" name="email" placeholder="john@example.com" class="w-full p-4 bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                                <input type="text" id="subject" name="subject" placeholder="What is this regarding?" class="w-full p-4 bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg">
+                            </div>
+                            <div class="mb-6">
+                                <label for="message" class="block text-gray-300 mb-2">Your Message</label>
+                                <textarea id="message" name="message" rows="5" placeholder="How can we help you?" class="w-full p-4 bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-primary rounded-lg"></textarea>
+                            </div>
+                            <div class="custom-checkbox flex items-start mb-6">
+                                <label class="flex items-start">
+                                    <input type="checkbox" class="hidden" name="newsletter">
+                                    <span class="checkmark w-5 h-5 border border-slate-600 rounded mt-1 mr-3 flex-shrink-0"></span>
+                                    <span class="text-gray-300">I agree to receive newsletters and promotional emails from S Cube Fitness.</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="w-full px-8 py-4 gradient-bg-main text-white font-bold text-lg rounded-lg shadow-lg hover:opacity-90 transition-all duration-300">
+                                Send Message
+                            </button>
+                            <div id="form-message" class="mt-4 text-green-400 font-semibold hidden"></div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Map Section -->
+                <div class="mt-16 rounded-2xl shadow-xl overflow-hidden h-96">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15727.648223181846!2d78.76314255025027!3d10.793473432109481!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1695297600000!5m2!1sen!2sin"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-20 px-6 fade-in">
+            <div class="container mx-auto max-w-4xl">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Frequently Asked <span class="text-gradient">Questions</span></h2>
+                    <div class="h-1 w-20 gradient-bg-secondary mx-auto mb-6 rounded-full"></div>
+                    <p class="text-lg text-gray-300">
+                        Find answers to common questions about our gym, memberships, and services.
+                    </p>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- FAQ Item 1 -->
+                    <div class="bg-slate-800 rounded-2xl p-6">
+                        <button class="faq-question flex justify-between items-center w-full text-left font-semibold text-white">
+                            <span>What are your operating hours?</span>
+                            <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer mt-4 text-gray-300 hidden">
+                            <p>We're open Monday through Friday from 5:00 AM to 11:00 PM, and Saturday through Sunday from 7:00 AM to 9:00 PM. Holiday hours may vary.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 2 -->
+                    <div class="bg-slate-800 rounded-2xl p-6">
+                        <button class="faq-question flex justify-between items-center w-full text-left font-semibold text-white">
+                            <span>Do you offer beginner training programs?</span>
+                            <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer mt-4 text-gray-300 hidden">
+                            <p>Yes! We offer personalized beginner programs that include an orientation session with a certified trainer to help you get comfortable with equipment and establish a foundation for your fitness journey.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="bg-slate-800 rounded-2xl p-6">
+                        <button class="faq-question flex justify-between items-center w-full text-left font-semibold text-white">
+                            <span>What should I bring for my first workout?</span>
+                            <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer mt-4 text-gray-300 hidden">
+                            <p>We recommend bringing a water bottle, towel, and workout clothes. We provide lockers (bring your own lock), showers, and all necessary equipment. We also have water refill stations and towels available for purchase if needed.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="bg-slate-800 rounded-2xl p-6">
+                        <button class="faq-question flex justify-between items-center w-full text-left font-semibold text-white">
+                            <span>Can I freeze my membership?</span>
+                            <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer mt-4 text-gray-300 hidden">
+                            <p>Yes, you can freeze your membership for medical reasons or extended travel (minimum 2 weeks, maximum 3 months). Please speak with our membership services team for details and to arrange a freeze.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="bg-slate-800 rounded-2xl p-6">
+                        <button class="faq-question flex justify-between items-center w-full text-left font-semibold text-white">
+                            <span>Do you have parking available?</span>
+                            <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer mt-4 text-gray-300 hidden">
+                            <p>Yes, we have a dedicated parking lot for members with over 100 spaces. We also have bike racks and are accessible by public transportation (bus stop located just 2 blocks away).</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12">
+                    <p class="text-gray-300 mb-4">Still have questions? We're happy to help!</p>
+                    <a href="#contact" class="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primaryDark transition-colors inline-flex items-center">
+                        <i class="fas fa-envelope mr-2"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-darker text-gray-400 py-12 px-6">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="#" class="text-2xl font-bold text-white mb-6 inline-block">S CUBE<span class="text-primary">FIT</span></a>
+                    <p class="mb-6">Transforming lives through fitness, nutrition, and community support since 2010.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-6 text-lg">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#home" class="hover:text-primary transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-primary transition-colors">About Us</a></li>
+                        <li><a href="#services" class="hover:text-primary transition-colors">Services</a></li>
+                        <li><a href="#pricing" class="hover:text-primary transition-colors">Membership</a></li>
+                        <li><a href="#gallery" class="hover:text-primary transition-colors">Gallery</a></li>
+                    </ul>
+                </div>
+                
+             
+                
+                <div>
+                    <h3 class="text-white font-semibold mb-6 text-lg">Contact Info</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary mr-3 mt-1"></i>
+                            <span>123 Fitness Ave, Suite 100<br>Workout City, WA 98001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt text-primary mr-3"></i>
+                            <span>(555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-primary mr-3"></i>
+                            <span>info@scubefit.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-clock text-primary mr-3"></i>
+                            <span>Mon-Fri: 5am - 11pm<br>Sat-Sun: 7am - 9pm</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 pt-8 text-center">
+                <p>&copy; 2024 S Cube Fitness Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll-to-top button -->
+    <button id="scrollToTopBtn" class="bg-primary text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-primaryDark">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    
+    <!-- JavaScript for functionality -->
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1500);
+            
+            // Show banner after page load
+            const banner = document.getElementById('floatingBanner');
+            setTimeout(() => {
+                banner.style.display = 'block';
+            }, 2000);
+        });
+
+        // Hide banner when clicked
+        function hideBanner() {
+            const banner = document.getElementById('floatingBanner');
+            banner.style.display = 'none';
+        }
+
+        // Initialize Swiper for testimonials
+        const swiper = new Swiper('.testimonial-slider', {
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 30,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                },
+            }
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('bg-dark', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-dark', 'shadow-lg');
+            }
+        });
+
+        // Mobile menu functionality
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const mobileNav = document.getElementById('mobile-nav');
+        const closeMobileMenu = document.getElementById('close-mobile-menu');
+        const navLinks = mobileNav.querySelectorAll('a');
+
+        hamburgerMenu.addEventListener('click', () => {
+            mobileNav.classList.toggle('translate-x-full');
+            hamburgerMenu.classList.toggle('active');
+            document.body.style.overflow = mobileNav.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+        });
+
+        closeMobileMenu.addEventListener('click', () => {
+            mobileNav.classList.add('translate-x-full');
+            hamburgerMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileNav.classList.add('translate-x-full');
+                hamburgerMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Form submission handling
+        const contactForm = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simulate form submission
+            formMessage.textContent = "Thank you! Your message has been sent successfully.";
+            formMessage.classList.remove('hidden');
+            formMessage.classList.add('flex');
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+                formMessage.classList.remove('flex');
+            }, 5000);
+            contactForm.reset();
+        });
+
+        // FAQ accordion functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                answer.classList.toggle('hidden');
+                icon.classList.toggle('fa-chevron-down');
+                icon.classList.toggle('fa-chevron-up');
+            });
+        });
+
+        // Pricing toggle functionality
+        const monthlyToggle = document.getElementById('monthly-toggle');
+        const annualToggle = document.getElementById('annual-toggle');
+        const monthlyPrices = document.querySelectorAll('.monthly-price');
+        const annualPrices = document.querySelectorAll('.annual-price');
+
+        monthlyToggle.addEventListener('click', () => {
+            monthlyToggle.classList.add('bg-primary', 'text-white');
+            annualToggle.classList.remove('bg-primary', 'text-white');
+            monthlyPrices.forEach(price => price.classList.remove('hidden'));
+            annualPrices.forEach(price => price.classList.add('hidden'));
+        });
+
+        annualToggle.addEventListener('click', () => {
+            annualToggle.classList.add('bg-primary', 'text-white');
+            monthlyToggle.classList.remove('bg-primary', 'text-white');
+            annualPrices.forEach(price => price.classList.remove('hidden'));
+            monthlyPrices.forEach(price => price.classList.add('hidden'));
+        });
+
+        // Counter animation
+        function animateCounter(el, target, duration) {
+            let startTime = null;
+            const startValue = 0;
+            
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const value = Math.floor(progress * (target - startValue) + startValue);
+                el.textContent = value.toLocaleString();
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    el.textContent = target.toLocaleString();
+                }
+            }
+            
+            window.requestAnimationFrame(step);
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate counters when stats section is visible
+                    if (entry.target.id === 'stats') {
+                        animateCounter(document.getElementById('members-count'), 2500, 2000);
+                        animateCounter(document.getElementById('trainers-count'), 15, 1500);
+                        animateCounter(document.getElementById('programs-count'), 12, 1800);
+                        animateCounter(document.getElementById('years-count'), 10, 2200);
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections with fade-in class
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('fade-in');
+            observer.observe(section);
+        });
+
+        // Scroll-to-top button functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.style.display = 'block';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.getElementById('main-header').offsetHeight;
+                    const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
