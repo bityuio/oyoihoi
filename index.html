@@ -478,19 +478,8 @@
             </div>
         </div>
     </div>
-
-    <!-- Dynamic Gym Background-->
-    <style>
-        /* BASE BODY STYLES: Sets up the full-screen canvas */
-        body {
-            margin: 0;
-            padding: 0;
-            position: relative; 
-            min-height: 100vh;
-            overflow: hidden; 
-        }
-
-        /* DYNAMIC BACKGROUND CONTAINER: Sits behind all content */
+  <!-- dynamic-bg -->
+     <style>
         #dynamic-bg {
             position: fixed; 
             top: 0;
@@ -503,8 +492,9 @@
             background: linear-gradient(-45deg, 
                 rgba(0,0,0,1.0), 
                 rgba(15,15,15,1.0), 
-                rgba(239,68,68,0.4), /* Reduced red opacity (0.6 -> 0.4) */
-                rgba(220,38,38,0.5)  /* Reduced dark red opacity (0.7 -> 0.5) */
+                rgba(20,20,20,1.0), /* Added more dark gray */
+                rgba(239,68,68,0.2), /* Further reduced red opacity (0.4 -> 0.2) */
+                rgba(220,38,38,0.3)  /* Further reduced dark red opacity (0.5 -> 0.3) */
             );
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
@@ -523,41 +513,65 @@
             border-radius: 50%;
             pointer-events: none;
             transition: transform 10s linear, opacity 3s ease, background 2s ease;
-            transform: translate(-100px, -100px); 
+            transform: translate(0, 0); /* Changed from (-100px, -100px) */
             opacity: 0; 
         }
 
         /* ADJUSTED: Reduced Red Bubble Opacity, Increased Dark Bubble Opacity */
-        .red-bubble  { 
-            background: rgba(239,68,68,0.15); /* Reduced background opacity (0.25 -> 0.15) */
-            box-shadow: 0 0 30px rgba(239,68,68,0.5); /* Reduced glow intensity (0.6 -> 0.5) */
+        .red-bubble { 
+            background: rgba(239,68,68,0.08); /* Further reduced background opacity (0.15 -> 0.08) */
+            box-shadow: 0 0 20px rgba(239,68,68,0.3); /* Further reduced glow intensity (0.5 -> 0.3) */
         } 
         .dark-bubble { 
-            background: rgba(220,38,38,0.4); /* Increased background opacity (0.3 -> 0.4) */
-            box-shadow: 0 0 50px rgba(220,38,38,0.8); /* Increased glow intensity and spread (0.7 -> 0.8, 40px -> 50px) */
+            background: rgba(30,30,30,0.5); /* Changed to dark gray with higher opacity */
+            box-shadow: 0 0 40px rgba(30,30,30,0.7); /* Changed to dark gray glow */
         } 
         .white-bubble { 
-            background: rgba(255,255,255,0.1); /* Slightly reduced white opacity (0.15 -> 0.1) */
-            box-shadow: 0 0 25px rgba(255,255,255,0.3); /* Slightly reduced white glow (0.4 -> 0.3) */
+            background: rgba(255,255,255,0.05); /* Further reduced white opacity (0.1 -> 0.05) */
+            box-shadow: 0 0 15px rgba(255,255,255,0.2); /* Further reduced white glow (0.3 -> 0.2) */
+        }
+        
+        /* Content overlay to demonstrate background effect */
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
     </style>
-</head>
-<body>
 
     <div id="dynamic-bg">
-        <div class="element red-bubble"  style="width:180px; height:180px;"></div>
+        <div class="element red-bubble" style="width:180px; height:180px;"></div>
         <div class="element dark-bubble" style="width:140px; height:140px;"></div>
         <div class="element white-bubble" style="width:120px; height:120px;"></div>
-        <div class="element red-bubble"  style="width:100px; height:100px;"></div>
+        <div class="element red-bubble" style="width:100px; height:100px;"></div>
         <div class="element dark-bubble" style="width:160px; height:160px;"></div>
         <div class="element white-bubble" style="width:90px; height:90px;"></div>
-        <div class="element red-bubble"  style="width:130px; height:130px;"></div>
+        <div class="element red-bubble" style="width:130px; height:130px;"></div>
         <div class="element dark-bubble" style="width:150px; height:150px;"></div>
         <div class="element white-bubble" style="width:110px; height:110px;"></div>
     </div>
+    
+    <div class="content">
+        <h1>Dynamic Gym Background</h1>
+        <p>This demonstrates the corrected dynamic background with reduced red color dominance. The background now has a more balanced color scheme with less intense red elements.</p>
+    </div>
 
     <script>
-        // function to move elements randomly across screen 
+        // Function to move elements randomly across screen 
         function moveElement(el, initial = false) {
             const elWidth = el.offsetWidth;
             const elHeight = el.offsetHeight;
@@ -570,26 +584,35 @@
             
             // If it's the initial placement, make it appear subtly, otherwise use random opacity
             if (initial) {
-                el.style.opacity = 0.4 + Math.random() * 0.3; 
+                el.style.opacity = 0.2 + Math.random() * 0.3; // Reduced initial opacity
             } else {
-                el.style.opacity = 0.4 + Math.random() * 0.6; // Dynamic glow effect
+                el.style.opacity = 0.2 + Math.random() * 0.5; // Reduced dynamic glow effect
             }
         }
 
         // We now select elements *inside* the dynamic-bg container
         const elements = document.querySelectorAll('#dynamic-bg .element');
 
-        // instantly move elements at page load (no static look)
-        elements.forEach(el => {
-            // Call moveElement with 'true' for initial placement
-            moveElement(el, true); 
-            // Subsequent moves will use the default (false) for initial
-            setInterval(() => moveElement(el), 6000 + Math.random() * 4000);
-        });
-    </script>
-</body>
-</html>
+        // Function to initialize all elements
+        function initializeElements() {
+            elements.forEach(el => {
+                // Position elements initially at their starting points
+                const x = Math.random() * (window.innerWidth - el.offsetWidth);
+                const y = Math.random() * (window.innerHeight - el.offsetHeight);
+                el.style.transform = `translate(${x}px, ${y}px)`;
+                el.style.opacity = 0.2 + Math.random() * 0.3;
+                
+                // Set up intervals for movement
+                setInterval(() => moveElement(el), 6000 + Math.random() * 4000);
+            });
+        }
 
+        // Initialize elements when page loads
+        window.addEventListener('load', initializeElements);
+
+        // Reinitialize on window resize
+        window.addEventListener('resize', initializeElements);
+    </script>
 
  <!-- Floating Left-to-Right Banner -->
 <div class="floating-banner" id="floatingBanner">
@@ -2363,5 +2386,6 @@
     </script>
 </body>
 </html>
+
 
 
