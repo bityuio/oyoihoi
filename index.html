@@ -609,145 +609,14 @@
         window.addEventListener('resize', initializeElements);
     </script>
 
- <!-- Floating Left-to-Right Banner -->
-<div class="floating-banner" id="floatingBanner">
-    <div class="0"> 
-        <span>
-            📣 Contact for Exciting Offers!!! &nbsp; &nbsp; &nbsp;
-        </span>
-    </div>
 
-    <button id="close-banner-btn" aria-label="Close Offer Banner">
-        &times;
-    </button>
-</div>
-
-<style>
-    /* 1. Base Styles for the Floating Banner */
-    .floating-banner {
-        /* Layout */
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 2000; /* Increased z-index to ensure visibility */
-        display: flex; /* Use flexbox to align text and button */
-        align-items: center;
-        justify-content: space-between;
-
-        /* Appearance */
-        padding: 0.75rem 1rem;
-        color: white;
-        font-weight: 600;
-        font-size: 1.125rem;
-        background-image: linear-gradient(to right, #ef4444 0%, #b91c1c 100%);
-        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
-
-        /* Entrance Animation */
-        transform: translateY(100%); 
-        animation: slideInUp 0.5s ease-out forwards;
-        animation-delay: 2s;
-    }
-
-    /* 2. Close Button Styles */
-    #close-banner-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 2rem;
-        line-height: 1;
-        cursor: pointer;
-        padding: 0 0 0 1rem;
-        opacity: 0.8;
-        transition: opacity 0.3s;
-    }
-    #close-banner-btn:hover {
-        opacity: 1;
-    }
-
-    /* 3. Marquee Styles */
-    .marquee-content-wrapper {
-        flex-grow: 1;
-        overflow: hidden; /* FIX: Essential for hiding the scrolling text outside the banner width */
-    }
-
-    .floating-banner .marquee-content-wrapper span {
-        display: inline-block;
-        white-space: nowrap; /* Forces text to stay on one line */
-        padding-left: 100%; /* Start the text just off-screen to the right */
-        animation: marquee 20s linear infinite;
-    }
-    
-    .floating-banner .marquee-content-wrapper span:hover {
-        animation-play-state: paused;
-    }
-
-    /* 4. Exit Animation Class */
-    .floating-banner.hide {
-        animation: slideOutDown 0.5s ease-in forwards;
-    }
-
-    /* 5. Keyframe Animations */
-    @keyframes slideInUp {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
-    }
-
-    @keyframes slideOutDown {
-        from { transform: translateY(0); }
-        to { transform: translateY(100%); }
-    }
-
-    @keyframes marquee {
-        /* Moves the text from the right edge of the container (0%) to fully off-screen left (-100% of its own width) */
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-100%); }
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Target the correct ID from the HTML ('floatingBanner')
-        const offerBanner = document.getElementById('floatingBanner');
-        const closeBannerBtn = document.getElementById('close-banner-btn');
-        
-        if (!offerBanner || !closeBannerBtn) return;
-
-        // Check if the banner was already closed in this session
-        if (sessionStorage.getItem('fitflexBannerClosed') === 'true') {
-            offerBanner.style.display = 'none';
-        }
-
-        const handleCloseBanner = () => {
-            // Remember that the banner was closed for this session
-            sessionStorage.setItem('fitflexBannerClosed', 'true');
-            
-            // Add the '.hide' class to trigger the CSS animation
-            offerBanner.classList.add('hide');
-            
-            // Use animationend for accurate timing
-            offerBanner.addEventListener('animationend', function handler(e) {
-                if (e.animationName === 'slideOutDown') {
-                    offerBanner.style.display = 'none';
-                    offerBanner.removeEventListener('animationend', handler);
-                }
-            }, { once: true });
-        };
-
-        // This line makes the button clickable
-        closeBannerBtn.addEventListener('click', handleCloseBanner);
-
-        // Remove the deprecated inline click handler (onclick="hideBanner()") from the main banner div
-        offerBanner.onclick = null;
-    });
-</script>
 
     <!-- Header & Navigation -->
     <header class="p-4 md:p-6 bg-transparent fixed top-0 left-0 w-full z-30 transition-all duration-300" id="main-header">
         <nav class="container mx-auto flex justify-between items-center">
             <a href="#" class="text-3xl font-bold tracking-tight text-white flex items-center">
                <img src="IMG_20250928_005929.png" alt="SCUBE Fitness Logo" class="w-10 h-10 rounded-full mr-2 justify-center">S</span>
-                <span>&#178;<span class="text-primary">Fitness Studio</span></span>
+                <span>&#178;<span class="text-primary">Fitness</span>
             </a>
             
             <!-- Desktop Navigation -->
@@ -1176,6 +1045,7 @@
         </section>
 <!-- Flash Offer Section -->
 <section id="flash-offer" class="py-16 px-6 bg-gradient-to-br from-red-900 via-darker to-red-900 relative overflow-hidden fade-in">
+
     <!-- Animated Background Elements -->
     <div class="absolute inset-0 overflow-hidden">
         <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary rounded-full opacity-10 animate-pulse"></div>
@@ -2383,9 +2253,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
