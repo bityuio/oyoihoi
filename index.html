@@ -1347,27 +1347,30 @@
 
 <style>
     /* Additional CSS for the flash offer section */
+    /* Changed text-shadow from red to vibrant magenta for less red dominance */
     .flash-digit {
-        text-shadow: 0 0 10px rgba(229, 57, 53, 0.7);
+        text-shadow: 0 0 10px rgba(224, 64, 251, 0.7); /* Magenta glow */
     }
     
+    /* Kept the background dark, removing any potential red hints from alpha codes */
     #flash-offer {
-        background: linear-gradient(135deg, #0002 0%, #0a0a0a 50%, #0235 100%);
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, #0a0a0a 50%, rgba(0, 0, 0, 0.2) 100%); /* Neutral dark gradient */
     }
     
-    /* Animation for the flash badge */
+    /* Animation for the flash badge - Changed glow color from red to magenta */
     @keyframes pulse-glow {
-        0% { box-shadow: 0 0 5px rgba(229, 57, 53, 0.5); }
-        50% { box-shadow: 0 0 20px rgba(229, 57, 53, 0.8); }
-        100% { box-shadow: 0 0 5px rgba(229, 57, 53, 0.5); }
+        0% { box-shadow: 0 0 5px rgba(224, 64, 251, 0.5); } /* Magenta glow start */
+        50% { box-shadow: 0 0 20px rgba(224, 64, 251, 0.8); } /* Magenta glow peak */
+        100% { box-shadow: 0 0 5px rgba(224, 64, 251, 0.5); } /* Magenta glow end */
     }
     
+    /* Changed border color from red to magenta */
     .flash-offer-card {
         animation: pulse-glow 2s infinite;
-        border: 2px solid rgba(229, 57, 53, 0.3);
+        border: 2px solid rgba(224, 64, 251, 0.3); /* Magenta border */
     }
     
-    /* Mobile optimization for flash offer */
+    /* Mobile optimization for flash offer (unchanged) */
     @media (max-width: 768px) {
         #flash-offer .premium-card {
             padding: 1.5rem;
@@ -1386,7 +1389,6 @@
         }
     }
 </style>
-
 <script>
     // Dynamic Offers Data
     const flashOffers = [
@@ -2381,6 +2383,7 @@
     </script>
 </body>
 </html>
+
 
 
 
