@@ -1156,7 +1156,517 @@
                 </div>
             </div>
         </section>
+<!-- Flash Offer Section -->
+<section id="flash-offer" class="py-16 px-6 bg-gradient-to-br from-red-900 via-darker to-red-900 relative overflow-hidden fade-in">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary rounded-full opacity-10 animate-pulse"></div>
+        <div class="absolute top-1/4 -right-10 w-32 h-32 bg-primary rounded-full opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute bottom-10 left-1/4 w-24 h-24 bg-primary rounded-full opacity-10 animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+    
+    <div class="container mx-auto relative z-10">
+        <div class="premium-card p-8 md:p-12 max-w-5xl mx-auto text-center relative overflow-hidden flash-offer-card">
+            <!-- Flash Badge - Fixed Positioning -->
+            <div class="absolute -top-3 -right-3 md:-top-4 md:-right-4 bg-gradient-to-r from-red-600 to-yellow-500 text-white text-xs md:text-sm font-bold px-4 py-1 md:px-6 md:py-2 rounded-full transform rotate-12 shadow-lg z-10">
+                <span class="flash-badge-text">FLASH OFFER</span>
+            </div>
+            
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">
+                    <span class="text-gradient flash-offer-title">Limited Time</span> Flash Deal!
+                </h2>
+                <div class="section-divider mx-auto"></div>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto flash-offer-description">
+                    Join today and get an exclusive discount that won't last long!
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Offer Details -->
+                <div class="text-left">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold text-white mb-2 flash-offer-name">Premium Membership</h3>
+                        <p class="text-gray-300 flash-offer-subtitle">Get access to all our premium facilities and services</p>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6 flash-offer-features">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-dumbbell text-primary"></i>
+                            </div>
+                            <span class="text-white">Unlimited Gym Access</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-users text-primary"></i>
+                            </div>
+                            <span class="text-white">All Group Classes</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-user-tie text-primary"></i>
+                            </div>
+                            <span class="text-white">2 Personal Training Sessions</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                                <i class="fas fa-heartbeat text-primary"></i>
+                            </div>
+                            <span class="text-white">Body Composition Analysis</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pricing & Timer -->
+                <div class="bg-slate-800/50 rounded-2xl p-6 border border-primary/30">
+                    <div class="text-center mb-6">
+                        <div class="flex items-center justify-center mb-4">
+                            <span class="text-3xl md:text-4xl font-bold text-white flash-offer-price">₹7999</span>
+                            <span class="text-gray-400 line-through text-lg md:text-xl ml-3 flash-offer-original-price">₹15998</span>
+                        </div>
+                        <p class="text-primary font-semibold text-lg flash-offer-discount">Save 50% Today Only!</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-gray-300 text-center mb-4">This offer expires in:</p>
+                        <div class="flex justify-center space-x-2 md:space-x-3">
+                            <div class="bg-slate-900 rounded-xl p-2 md:p-3 text-center min-w-12 md:min-w-16">
+                                <div class="text-xl md:text-2xl font-bold text-primary flash-digit" id="flash-hours">12</div>
+                                <div class="text-xs text-gray-400 mt-1">HOURS</div>
+                            </div>
+                            <div class="text-xl md:text-2xl font-bold text-primary flex items-center">:</div>
+                            <div class="bg-slate-900 rounded-xl p-2 md:p-3 text-center min-w-12 md:min-w-16">
+                                <div class="text-xl md:text-2xl font-bold text-primary flash-digit" id="flash-minutes">00</div>
+                                <div class="text-xs text-gray-400 mt-1">MINUTES</div>
+                            </div>
+                            <div class="text-xl md:text-2xl font-bold text-primary flex items-center">:</div>
+                            <div class="bg-slate-900 rounded-xl p-2 md:p-3 text-center min-w-12 md:min-w-16">
+                                <div class="text-xl md:text-2xl font-bold text-primary flash-digit" id="flash-seconds">00</div>
+                                <div class="text-xs text-gray-400 mt-1">SECONDS</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="flash-offer-btn" class="premium-btn w-full text-base md:text-lg py-3 md:py-4">
+                        <i class="fas fa-bolt mr-2"></i> Grab This Deal Now!
+                    </button>
+                    
+                    <p class="text-gray-400 text-xs text-center mt-4">
+                        Only <span class="text-primary font-bold flash-offer-spots">5</span> spots left at this price!
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="mt-8">
+                <div class="flex justify-between text-gray-400 text-sm mb-2">
+                    <span>Spots Filling Fast!</span>
+                    <span><span class="flash-offer-spots-remaining">5</span>/<span class="flash-offer-total-spots">10</span> Remaining</span>
+                </div>
+                <div class="w-full bg-slate-700 rounded-full h-2">
+                    <div class="bg-gradient-to-r from-primary to-yellow-500 h-2 rounded-full flash-offer-progress" style="width: 50%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
+<!-- Special Offer Popup Modal -->
+<div id="specialOfferModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm"></div>
+    <div class="relative premium-card max-w-md w-full mx-4 p-6 md:p-8 popup-offer">
+        <button id="closeOfferModal" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 md:w-20 md:h-20 gradient-bg-main rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-gift text-2xl md:text-3xl text-white"></i>
+            </div>
+            <h3 class="text-xl md:text-2xl font-bold text-white mb-2 popup-offer-title">Limited Time Offer!</h3>
+            <p class="text-gray-300 text-sm md:text-base popup-offer-description">Get 50% off on our premium membership</p>
+        </div>
+        
+        <div class="bg-slate-800 rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-center mb-2">
+                <span class="text-3xl md:text-4xl font-bold text-white popup-offer-price">₹6666</span>
+                <span class="text-gray-400 ml-2 line-through text-lg md:text-xl popup-offer-original-price">₹13332</span>
+            </div>
+            <p class="text-primary text-center font-semibold text-sm md:text-base popup-offer-name">12 Months Premium Membership</p>
+        </div>
+        
+        <div class="text-center mb-6">
+            <p class="text-gray-300 text-sm md:text-base mb-2">Offer ends in:</p>
+            <div id="countdownTimer" class="flex justify-center space-x-2">
+                <div class="bg-slate-800 rounded-lg p-2 min-w-10 md:min-w-12">
+                    <div class="text-xl md:text-2xl font-bold text-primary popup-hours">24</div>
+                    <div class="text-xs text-gray-400">HOURS</div>
+                </div>
+                <div class="text-xl md:text-2xl font-bold text-primary flex items-center">:</div>
+                <div class="bg-slate-800 rounded-lg p-2 min-w-10 md:min-w-12">
+                    <div class="text-xl md:text-2xl font-bold text-primary popup-minutes">00</div>
+                    <div class="text-xs text-gray-400">MINUTES</div>
+                </div>
+                <div class="text-xl md:text-2xl font-bold text-primary flex items-center">:</div>
+                <div class="bg-slate-800 rounded-lg p-2 min-w-10 md:min-w-12">
+                    <div class="text-xl md:text-2xl font-bold text-primary popup-seconds">00</div>
+                    <div class="text-xs text-gray-400">SECONDS</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex flex-col space-y-3">
+            <button id="claimOfferBtn" class="premium-btn text-center w-full text-base md:text-lg py-3">
+                Claim This Offer Now
+            </button>
+            <button id="closeOfferBtn" class="px-4 py-2 bg-transparent border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors text-sm md:text-base">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Additional CSS for the flash offer section */
+    .flash-digit {
+        text-shadow: 0 0 10px rgba(229, 57, 53, 0.7);
+    }
+    
+    #flash-offer {
+        background: linear-gradient(135deg, #7f1d1d 0%, #0a0a0a 50%, #7f1d1d 100%);
+    }
+    
+    /* Animation for the flash badge */
+    @keyframes pulse-glow {
+        0% { box-shadow: 0 0 5px rgba(229, 57, 53, 0.5); }
+        50% { box-shadow: 0 0 20px rgba(229, 57, 53, 0.8); }
+        100% { box-shadow: 0 0 5px rgba(229, 57, 53, 0.5); }
+    }
+    
+    .flash-offer-card {
+        animation: pulse-glow 2s infinite;
+        border: 2px solid rgba(229, 57, 53, 0.3);
+    }
+    
+    /* Mobile optimization for flash offer */
+    @media (max-width: 768px) {
+        #flash-offer .premium-card {
+            padding: 1.5rem;
+        }
+        
+        .flash-offer-card .grid {
+            gap: 1.5rem;
+        }
+        
+        .flash-offer-card .text-3xl {
+            font-size: 1.75rem;
+        }
+        
+        .flash-offer-card .text-2xl {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    // Dynamic Offers Data
+    const flashOffers = [
+        {
+            title: "Limited Time",
+            description: "Join today and get an exclusive discount that won't last long!",
+            name: "Premium Membership",
+            subtitle: "Get access to all our premium facilities and services",
+            price: "₹7999",
+            originalPrice: "₹15998",
+            discount: "Save 50% Today Only!",
+            spots: 5,
+            totalSpots: 10,
+            features: [
+                "Unlimited Gym Access",
+                "Personal Training Sessions",
+                "Body Composition Analysis"
+            ],
+            hours: 12
+        },
+        {
+            title: "Summer Special",
+            description: "Beat the heat with our exclusive summer fitness package!",
+            name: "Summer Fitness Package",
+            subtitle: "Perfect for getting in shape for the summer",
+            price: "₹6999",
+            originalPrice: "₹13998",
+            discount: "Save 50% This Week!",
+            spots: 3,
+            totalSpots: 8,
+            features: [
+                "Unlimited Gym Access",
+                "Nutrition Consultation",
+                "Recovery Session"
+            ],
+            hours: 24
+        },
+        {
+            title: "New Year Offer",
+            description: "Start your fitness journey with our special New Year deal!",
+            name: "New Year Fitness Plan",
+            subtitle: "Kickstart your fitness goals for the new year",
+            price: "₹8999",
+            originalPrice: "₹17998",
+            discount: "Save 50% Limited Time!",
+            spots: 7,
+            totalSpots: 15,
+            features: [
+                "Unlimited Gym Access",
+                "Personal Training Sessions",
+                "Body Composition Analysis",
+                "Nutrition Plan"
+            ],
+            hours: 48
+        },
+        {
+            title: "Weekend Warrior",
+            description: "Perfect for those who want to maximize their weekend workouts!",
+            name: "Weekend Warrior Package",
+            subtitle: "Make the most of your weekends with our special package",
+            price: "₹5999",
+            originalPrice: "₹11998",
+            discount: "Save 50% This Month!",
+            spots: 2,
+            totalSpots: 6,
+            features: [
+                "Weekend Gym Access",
+                "1 Personal Training Session",
+                "Nutrition Guide"
+            ],
+            hours: 72
+        }
+    ];
+
+    const popupOffers = [
+        {
+            title: "Limited Time Offer!",
+            description: "Get 50% off on our premium membership",
+            name: "12 Months Premium Membership",
+            price: "₹6666",
+            originalPrice: "₹13332",
+            hours: 24
+        },
+        {
+            title: "Special Discount!",
+            description: "Exclusive deal for new members only",
+            name: "6 Months Elite Membership",
+            price: "₹4999",
+            originalPrice: "₹9998",
+            hours: 12
+        },
+        {
+            title: "Flash Sale!",
+            description: "Limited spots available at this price",
+            name: "3 Months Pro Membership",
+            price: "₹3333",
+            originalPrice: "₹6666",
+            hours: 6
+        }
+    ];
+
+    // Flash Offer Timer
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize offers
+        initializeOffers();
+        
+        // Flash offer button functionality - redirect to contact.html
+        document.getElementById('flash-offer-btn').addEventListener('click', function() {
+            // Close any open modals
+            const modal = document.getElementById('specialOfferModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Redirect to contact.html
+            window.location.href = 'contact.html';
+        });
+    });
+
+    // Function to initialize offers
+    function initializeOffers() {
+        // Select random offers
+        const randomFlashOfferIndex = Math.floor(Math.random() * flashOffers.length);
+        const randomPopupOfferIndex = Math.floor(Math.random() * popupOffers.length);
+        
+        const flashOffer = flashOffers[randomFlashOfferIndex];
+        const popupOffer = popupOffers[randomPopupOfferIndex];
+        
+        // Update Flash Offer Section
+        updateFlashOffer(flashOffer);
+        
+        // Update Popup Offer
+        updatePopupOffer(popupOffer);
+        
+        // Initialize timers
+        initializeFlashOfferTimer(flashOffer.hours);
+        initializePopupTimer(popupOffer.hours);
+        
+        // Show popup after 3 seconds
+        setTimeout(function() {
+            const modal = document.getElementById('specialOfferModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }, 3000);
+    }
+
+    // Function to update Flash Offer content
+    function updateFlashOffer(offer) {
+        // Update text content
+        document.querySelector('.flash-offer-title').textContent = offer.title;
+        document.querySelector('.flash-offer-description').textContent = offer.description;
+        document.querySelector('.flash-offer-name').textContent = offer.name;
+        document.querySelector('.flash-offer-subtitle').textContent = offer.subtitle;
+        document.querySelector('.flash-offer-price').textContent = offer.price;
+        document.querySelector('.flash-offer-original-price').textContent = offer.originalPrice;
+        document.querySelector('.flash-offer-discount').textContent = offer.discount;
+        document.querySelector('.flash-offer-spots').textContent = offer.spots;
+        document.querySelector('.flash-offer-spots-remaining').textContent = offer.spots;
+        document.querySelector('.flash-offer-total-spots').textContent = offer.totalSpots;
+        
+        // Update progress bar
+        const progressPercentage = (offer.totalSpots - offer.spots) / offer.totalSpots * 100;
+        document.querySelector('.flash-offer-progress').style.width = `${progressPercentage}%`;
+        
+        // Update features
+        const featuresContainer = document.querySelector('.flash-offer-features');
+        featuresContainer.innerHTML = '';
+        
+        offer.features.forEach(feature => {
+            const featureElement = document.createElement('div');
+            featureElement.className = 'flex items-center';
+            featureElement.innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mr-4">
+                    <i class="fas fa-check text-primary"></i>
+                </div>
+                <span class="text-white">${feature}</span>
+            `;
+            featuresContainer.appendChild(featureElement);
+        });
+    }
+
+    // Function to update Popup Offer content
+    function updatePopupOffer(offer) {
+        document.querySelector('.popup-offer-title').textContent = offer.title;
+        document.querySelector('.popup-offer-description').textContent = offer.description;
+        document.querySelector('.popup-offer-name').textContent = offer.name;
+        document.querySelector('.popup-offer-price').textContent = offer.price;
+        document.querySelector('.popup-offer-original-price').textContent = offer.originalPrice;
+    }
+
+    // Function to initialize Flash Offer Timer
+    function initializeFlashOfferTimer(hours) {
+        // Set the end time for the flash offer (custom hours from now)
+        const flashOfferEnd = new Date();
+        flashOfferEnd.setHours(flashOfferEnd.getHours() + hours);
+        
+        function updateFlashOfferTimer() {
+            const now = new Date();
+            const diff = flashOfferEnd - now;
+            
+            if (diff <= 0) {
+                // Offer expired
+                document.getElementById('flash-hours').textContent = '00';
+                document.getElementById('flash-minutes').textContent = '00';
+                document.getElementById('flash-seconds').textContent = '00';
+                document.getElementById('flash-offer-btn').textContent = 'Offer Expired';
+                document.getElementById('flash-offer-btn').classList.remove('premium-btn');
+                document.getElementById('flash-offer-btn').classList.add('bg-gray-600', 'cursor-not-allowed');
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('flash-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('flash-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('flash-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Update timer every second
+        setInterval(updateFlashOfferTimer, 1000);
+        updateFlashOfferTimer();
+    }
+
+    // Function to initialize Popup Timer
+    function initializePopupTimer(hours) {
+        // Set the end time for the popup offer (custom hours from now)
+        const popupOfferEnd = new Date();
+        popupOfferEnd.setHours(popupOfferEnd.getHours() + hours);
+        
+        function updatePopupTimer() {
+            const now = new Date();
+            const diff = popupOfferEnd - now;
+            
+            if (diff <= 0) {
+                // Offer expired
+                document.querySelector('.popup-hours').textContent = '00';
+                document.querySelector('.popup-minutes').textContent = '00';
+                document.querySelector('.popup-seconds').textContent = '00';
+                document.getElementById('claimOfferBtn').textContent = 'Offer Expired';
+                document.getElementById('claimOfferBtn').classList.remove('premium-btn');
+                document.getElementById('claimOfferBtn').classList.add('bg-gray-600', 'cursor-not-allowed');
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.querySelector('.popup-hours').textContent = hours.toString().padStart(2, '0');
+            document.querySelector('.popup-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.querySelector('.popup-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Update timer every second
+        setInterval(updatePopupTimer, 1000);
+        updatePopupTimer();
+        
+        // Popup modal functionality
+        const closeModal = function() {
+            const modal = document.getElementById('specialOfferModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        };
+        
+        const closeBtn = document.getElementById('closeOfferModal');
+        const closeOfferBtn = document.getElementById('closeOfferBtn');
+        const claimOfferBtn = document.getElementById('claimOfferBtn');
+        
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (closeOfferBtn) closeOfferBtn.addEventListener('click', closeModal);
+        
+        // Claim Offer Button - redirect to contact.html and close modal
+        if (claimOfferBtn) {
+            claimOfferBtn.addEventListener('click', function() {
+                closeModal();
+                // Redirect to contact.html
+                window.location.href = 'contact.html';
+            });
+        }
+        
+        // Close modal when clicking outside
+        const modal = document.getElementById('specialOfferModal');
+        if (modal) {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+    }
+</script>
         <!-- Gallery Section -->
         <section id="gallery" class="py-20 px-6 fade-in">
             <div class="container mx-auto">
@@ -1853,4 +2363,5 @@
     </script>
 </body>
 </html>
+
 
